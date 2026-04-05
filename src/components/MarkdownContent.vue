@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <article
-    class="markdown-content"
+    class="markdown-content markdown-body"
     v-html="html"
   ></article>
 </template>

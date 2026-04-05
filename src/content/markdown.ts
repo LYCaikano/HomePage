@@ -7,6 +7,32 @@ const markdown = new MarkdownIt({
   typographer: true,
 });
 
+const defaultLinkOpen =
+  markdown.renderer.rules.link_open ??
+  ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
+
+markdown.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+  const href = tokens[idx]?.attrGet("href") ?? "";
+  const isExternal = /^(https?:)?\/\//.test(href) || href.startsWith("mailto:");
+
+  if (isExternal) {
+    tokens[idx]?.attrSet("target", "_blank");
+    tokens[idx]?.attrSet("rel", "noopener noreferrer");
+  }
+
+  return defaultLinkOpen(tokens, idx, options, env, self);
+};
+
+const defaultImageRender =
+  markdown.renderer.rules.image ??
+  ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
+
+markdown.renderer.rules.image = (tokens, idx, options, env, self) => {
+  tokens[idx]?.attrSet("loading", "lazy");
+  tokens[idx]?.attrSet("decoding", "async");
+  return defaultImageRender(tokens, idx, options, env, self);
+};
+
 export interface MarkdownMeta {
   [key: string]: string | string[] | undefined;
 }

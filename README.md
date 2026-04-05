@@ -171,6 +171,14 @@ Edit:
 
 The About page now renders Markdown directly, so you can write headings, paragraphs, lists, links, and blockquotes in plain Markdown.
 
+Image and link notes:
+
+- Markdown links are rendered with proper `<a>` tags
+- external links open in a new tab automatically
+- Markdown images support:
+  - remote URLs such as `https://example.com/demo.jpg`
+  - files in `public/images/...` referenced as `/images/demo.jpg`
+
 ### Future Blog Content
 
 Prepared paths:
@@ -180,6 +188,10 @@ Prepared paths:
 - `src/content/markdown.ts`
 
 The project now includes a reusable Markdown parser and a post loader for future blog pages.
+
+## Acknowledgements
+
+- Markdown typography styling is inspired by [`github-markdown-css`](https://github.com/sindresorhus/github-markdown-css)
 
 ### Footer
 
