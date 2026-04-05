@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { Menu, X } from "lucide-vue-next";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 import NavLinks from "@/components/site/NavLinks.vue";
+import { siteIconPath } from "@/data";
 import type { LinkItem, ThemeMode } from "@/data";
 
 const props = withDefaults(defineProps<{
@@ -33,7 +34,12 @@ const menuIcon = computed(() => (props.drawerOpen ? X : Menu));
       :href="homeHref"
       @click="emit('closeDrawer')"
     >
-      <span class="site-brand__mark" aria-hidden="true"></span>
+      <img
+        class="site-brand__icon"
+        :src="siteIconPath"
+        alt=""
+        aria-hidden="true"
+      />
       <span>{{ siteName }}</span>
     </a>
 

@@ -165,6 +165,21 @@ Edit:
 
 Current footer values are placeholder examples to avoid exposing real filing data.
 
+### Site Icon / Favicon
+
+Default path:
+
+- `public/site-icon.ico`
+
+This file is used for:
+
+- the top-left brand icon in the header
+- the browser favicon
+
+You can replace it with your own `.ico` file directly.
+
+The displayed header icon size is fixed by CSS, so the visual size stays consistent even if the source icon is larger or smaller.
+
 ## Styling
 
 Global style entry:
