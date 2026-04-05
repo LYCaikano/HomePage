@@ -1,0 +1,29 @@
+.site-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin: 0 auto;
+  min-height: 2.8rem;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.site-footer__inner a {
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .site-footer__inner {
+    padding: 0.7rem 0;
+  }
+}

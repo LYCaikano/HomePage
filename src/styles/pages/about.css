@@ -1,0 +1,62 @@
+.about-layout {
+  background:
+    radial-gradient(circle at top left, rgba(29, 110, 242, 0.08), transparent 28%),
+    var(--bg);
+}
+
+.about-page {
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin: 0 auto;
+  flex: 1;
+  display: grid;
+  align-items: center;
+  padding: calc(var(--top-bar-height) + 2rem) 0 1rem;
+}
+
+.about-page__inner {
+  width: min(100%, 40rem);
+}
+
+.about-page__eyebrow {
+  margin: 0 0 1rem;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.about-page h1 {
+  margin: 0;
+  font-size: 4.5rem;
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+}
+
+.about-page__role {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.about-page__copy {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+@media (max-width: 760px) {
+  .about-page {
+    padding-top: calc(var(--top-bar-height) + 1.25rem);
+  }
+
+  .about-page h1 {
+    font-size: 3rem;
+  }
+
+  .about-page__role {
+    font-size: 1rem;
+  }
+}

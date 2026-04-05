@@ -1,0 +1,244 @@
+.hero {
+  display: grid;
+  grid-template-areas:
+    "visual"
+    "copy";
+  gap: 1.5rem;
+  align-content: center;
+  justify-items: center;
+  min-height: calc(100dvh - var(--top-bar-height) - var(--footer-height) - 2rem);
+}
+
+.hero__copy,
+.hero__visual {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 560ms ease,
+    transform 560ms ease;
+}
+
+.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__copy.is-visible .hero__name,
+.hero__copy.is-visible .hero__role,
+.hero__copy.is-visible .hero__tagline,
+.hero__copy.is-visible .hero__intro,
+.hero__copy.is-visible .hero__actions,
+.hero__visual.is-visible .gallery-shell {
+  animation: rise-fade 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero__copy.is-visible .hero__name {
+  animation-delay: 40ms;
+}
+
+.hero__copy.is-visible .hero__role {
+  animation-delay: 130ms;
+}
+
+.hero__copy.is-visible .hero__tagline {
+  animation-delay: 210ms;
+}
+
+.hero__copy.is-visible .hero__intro {
+  animation-delay: 290ms;
+}
+
+.hero__copy.is-visible .hero__actions {
+  animation-delay: 380ms;
+}
+
+.hero__visual {
+  grid-area: visual;
+  position: relative;
+  transition-delay: 520ms;
+}
+
+.hero__visual.is-visible .gallery-shell {
+  animation-delay: 620ms;
+}
+
+.hero__copy {
+  grid-area: copy;
+  width: min(100%, 24rem);
+  justify-self: center;
+}
+
+.hero h1 {
+  max-width: 10ch;
+  margin: 0;
+  letter-spacing: -0.05em;
+  font-size: 3rem;
+  line-height: 0.94;
+}
+
+.hero__role {
+  margin: 0.9rem 0 0;
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.hero__tagline,
+.hero__intro {
+  color: var(--text-soft);
+  line-height: 1.75;
+}
+
+.hero__tagline {
+  max-width: 24rem;
+  margin: 0.65rem 0 0;
+  font-size: 1rem;
+}
+
+.hero__intro {
+  max-width: 24rem;
+  margin: 0.45rem 0 0;
+  font-size: 0.98rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.7rem;
+  padding: 0.68rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+  border-color: rgba(29, 110, 242, 0.24);
+}
+
+.button--primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: transparent;
+}
+
+.button--secondary {
+  background: var(--surface);
+}
+
+@media (max-width: 960px) {
+  .hero {
+    min-height: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .page-content {
+    padding-top: calc(var(--top-bar-height) + 2.25rem);
+    padding-bottom: 0.35rem;
+  }
+
+  .hero {
+    gap: 1.15rem;
+    justify-items: center;
+    min-height: calc(100dvh - var(--top-bar-height) - var(--footer-height) - 2.6rem);
+    transform: translateY(-0.9rem);
+  }
+
+  .hero__copy {
+    max-width: 24rem;
+    width: min(100%, 24rem);
+    align-self: start;
+    justify-self: center;
+  }
+
+  .hero__visual {
+    width: 20.5rem;
+    justify-self: center;
+    align-self: end;
+  }
+
+  .hero h1 {
+    font-size: 5.4rem;
+  }
+
+  .hero__role {
+    font-size: 1.3rem;
+  }
+
+  .hero__tagline {
+    font-size: 1.08rem;
+  }
+
+  .hero__intro {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1180px) {
+  .hero {
+    --hero-copy-width: 26rem;
+    --hero-visual-footprint: 29.5rem;
+    grid-template-columns: minmax(0, var(--hero-copy-width)) minmax(0, var(--hero-visual-footprint));
+    grid-template-areas: "copy visual";
+    column-gap: 1.6rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero__copy {
+    width: var(--hero-copy-width);
+    max-width: var(--hero-copy-width);
+    align-self: center;
+    justify-self: end;
+    padding-right: 0.15rem;
+    transform: translateY(0.35rem);
+  }
+
+  .hero__visual {
+    width: var(--hero-visual-footprint);
+    min-width: var(--hero-visual-footprint);
+    align-self: center;
+    justify-self: start;
+    display: grid;
+    place-items: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero h1 {
+    max-width: 100%;
+  }
+
+  .page-content {
+    padding-top: calc(var(--top-bar-height) + 1rem);
+  }
+
+  .hero__actions {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: start;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .button {
+    min-width: 0;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.92rem;
+  }
+}

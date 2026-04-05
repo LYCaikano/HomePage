@@ -1,0 +1,63 @@
+.page-shell {
+  position: relative;
+  overflow: hidden;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ambient {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.ambient--one {
+  top: 4rem;
+  right: -3rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(103, 172, 255, 0.24);
+}
+
+.ambient--two {
+  top: 32rem;
+  left: -4rem;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(255, 173, 98, 0.18);
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  border: 0;
+  padding: 0;
+  background: rgba(8, 8, 8, 0.32);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease;
+}
+
+body.menu-open .mobile-nav-backdrop {
+  opacity: 1;
+  visibility: visible;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  flex: 1;
+  align-items: center;
+  padding: calc(var(--top-bar-height) + 1.5rem) 0 0.5rem;
+}

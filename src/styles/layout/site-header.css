@@ -1,0 +1,131 @@
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 30;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.top-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin: 0 auto;
+  min-height: 3.45rem;
+}
+
+.top-bar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.95rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.site-brand__mark {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 2px;
+  background: var(--text);
+}
+
+.menu-button,
+.mobile-nav__header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.46rem 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.menu-button:hover,
+.mobile-nav__header button:hover {
+  background: var(--surface);
+}
+
+.menu-button {
+  min-width: 2.45rem;
+  min-height: 2.2rem;
+}
+
+.top-nav {
+  display: none;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.top-nav__link {
+  position: relative;
+  color: var(--text-soft);
+  transition: color 180ms ease;
+}
+
+.top-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms ease;
+}
+
+.top-nav__link.is-active,
+.top-nav__link:hover {
+  color: var(--text);
+}
+
+.top-nav__link.is-active::after,
+.top-nav__link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (min-width: 900px) {
+  .menu-button {
+    display: none !important;
+  }
+
+  .top-nav,
+  .top-nav--about {
+    display: flex;
+  }
+
+  .top-bar__actions {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .top-bar__inner {
+    min-height: 3.2rem;
+  }
+
+  .menu-button,
+  .mobile-nav__header button {
+    border-radius: 999px;
+  }
+}
