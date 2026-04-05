@@ -279,16 +279,16 @@
     Menlo,
     monospace;
   font-size: 0.78rem;
-  line-height: 1.22;
+  line-height: 1.02;
   counter-reset: line-number;
 }
 
 .markdown-body .code-block-line {
   display: grid;
-  grid-template-columns: 1.08rem minmax(max-content, auto);
-  column-gap: 0.7rem;
+  grid-template-columns: minmax(3.6ch, max-content) minmax(max-content, auto);
+  column-gap: 0.875rem;
   align-items: flex-start;
-  min-height: 1.18em;
+  min-height: 1em;
   counter-increment: line-number;
 }
 
@@ -296,6 +296,7 @@
   content: counter(line-number);
   color: var(--md-code-muted);
   text-align: right;
+  justify-self: end;
   user-select: none;
 }
 
@@ -403,18 +404,19 @@
   }
 
   .markdown-body .code-content {
-    padding: 0.34rem 0.45rem 0.44rem 0.27rem;
+    padding: 0.34rem 0.45rem 0.44rem 0.22rem;
   }
 
   .markdown-body .code-content code {
     font-size: 0.68rem;
-    line-height: 1.16;
+    line-height: 1;
     padding-right: 0.92rem;
   }
 
   .markdown-body .code-block-line {
-    grid-template-columns: 0.86rem minmax(max-content, auto);
-    column-gap: 0.56rem;
+    grid-template-columns: minmax(3.2ch, max-content) minmax(max-content, auto);
+    column-gap: 1.12rem;
+    min-height: 1em;
   }
 
   .markdown-body img {
