@@ -167,7 +167,7 @@
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
   border-radius: 1rem;
-  background: transparent;
+  background: var(--md-code-header-bg);
   box-shadow: none;
   font-family:
     "Roboto",
@@ -178,22 +178,63 @@
 }
 
 .markdown-body .code-block-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
   min-height: 1.82rem;
   padding: 0.16rem 0.58rem;
-  border-radius: 1rem 1rem 0 0;
-  background: var(--md-code-header-bg);
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+  list-style: none;
+}
+
+.markdown-body .code-block-header::-webkit-details-marker {
+  display: none;
 }
 
 .markdown-body .language-label {
   color: var(--md-code-muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  justify-self: start;
+}
+
+.markdown-body .toggle-label {
+  justify-self: center;
+  color: var(--md-code-text);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.markdown-body .toggle-label::before {
+  content: "点击展开代码";
+}
+
+.markdown-body .code-block-container[open] .toggle-label::before {
+  content: "点击折叠代码";
+}
+
+.markdown-body .code-block-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: end;
+}
+
+.markdown-body .toggle-hint::before {
+  content: "展开";
+  color: var(--md-code-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.markdown-body .code-block-container[open] .toggle-hint::before {
+  content: "收起";
 }
 
 .markdown-body .copy-action {
@@ -230,6 +271,12 @@
   background: color-mix(in srgb, var(--accent) 18%, var(--md-code-header-bg));
 }
 
+.markdown-body .code-block-container:not([open]) .copy-action {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .markdown-body .copy-action__icon {
   width: 0.9rem;
   height: 0.9rem;
@@ -246,9 +293,18 @@
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: 0.42rem 0.41rem 0.52rem 0.28rem;
-  border-radius: 0 0 1rem 1rem;
+  padding: 0.72rem 0.41rem 0.52rem 0.28rem;
+  border-top: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
+  border-radius: 0 0 calc(1rem - 1px) calc(1rem - 1px);
   background: var(--md-code-bg);
+}
+
+.markdown-body .code-block-container:not([open]) {
+  border-radius: 1rem;
+}
+
+.markdown-body .code-block-container:not([open]) .code-block-header {
+  border-radius: calc(1rem - 1px);
 }
 
 .markdown-body .code-content pre {
@@ -279,7 +335,7 @@
     Menlo,
     monospace;
   font-size: 0.78rem;
-  line-height: 1.02;
+  line-height: 0.95;
   counter-reset: line-number;
 }
 
@@ -288,7 +344,6 @@
   grid-template-columns: minmax(3.6ch, max-content) minmax(max-content, auto);
   column-gap: 0.875rem;
   align-items: flex-start;
-  min-height: 1em;
   counter-increment: line-number;
 }
 
@@ -386,7 +441,11 @@
   }
 
   .markdown-body .language-label {
-    font-size: 0.66rem;
+    font-size: 0.62rem;
+  }
+
+  .markdown-body .toggle-label {
+    font-size: 0.78rem;
   }
 
   .markdown-body .copy-action {
@@ -403,20 +462,23 @@
     display: inline;
   }
 
+  .markdown-body .toggle-hint::before {
+    font-size: 0.66rem;
+  }
+
   .markdown-body .code-content {
-    padding: 0.34rem 0.45rem 0.44rem 0.22rem;
+    padding: 0.56rem 0.45rem 0.44rem 0.22rem;
   }
 
   .markdown-body .code-content code {
     font-size: 0.68rem;
-    line-height: 1;
+    line-height: 0.95;
     padding-right: 0.92rem;
   }
 
   .markdown-body .code-block-line {
     grid-template-columns: minmax(3.2ch, max-content) minmax(max-content, auto);
     column-gap: 1.12rem;
-    min-height: 1em;
   }
 
   .markdown-body img {

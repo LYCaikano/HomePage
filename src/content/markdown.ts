@@ -143,21 +143,24 @@ function renderCodeBlock(content: string, rawInfo: string) {
   const languageClass = language ? ` language-${toLanguageClassToken(language)}` : "";
 
   return `
-<div class="code-block-container">
-  <div class="code-block-header">
+<details class="code-block-container">
+  <summary class="code-block-header">
     <div class="language-label">${escapeHtml(languageLabel)}</div>
-    <button class="copy-action" type="button" aria-label="复制代码">
-      <span class="copy-action__label">复制</span>
-      <svg class="copy-action__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M9 9.75A2.25 2.25 0 0 1 11.25 7.5h7.5A2.25 2.25 0 0 1 21 9.75v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5A2.25 2.25 0 0 1 9 17.25z"></path>
-        <path d="M15 7.5V6.75A2.25 2.25 0 0 0 12.75 4.5h-7.5A2.25 2.25 0 0 0 3 6.75v7.5a2.25 2.25 0 0 0 2.25 2.25H6"></path>
-      </svg>
-    </button>
-  </div>
+    <span class="toggle-label" aria-hidden="true"></span>
+    <div class="code-block-actions">
+      <button class="copy-action" type="button" aria-label="复制代码">
+        <span class="copy-action__label">复制</span>
+        <svg class="copy-action__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 9.75A2.25 2.25 0 0 1 11.25 7.5h7.5A2.25 2.25 0 0 1 21 9.75v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5A2.25 2.25 0 0 1 9 17.25z"></path>
+          <path d="M15 7.5V6.75A2.25 2.25 0 0 0 12.75 4.5h-7.5A2.25 2.25 0 0 0 3 6.75v7.5a2.25 2.25 0 0 0 2.25 2.25H6"></path>
+        </svg>
+      </button>
+    </div>
+  </summary>
   <div class="code-content">
     <pre><code class="hljs${languageClass}">${highlightedLines}</code></pre>
   </div>
-</div>`.trim();
+</details>`.trim();
 }
 
 const normalizedAssetModules = Object.fromEntries(

@@ -68,6 +68,9 @@ async function handleClick(event: Event) {
     return;
   }
 
+  event.preventDefault();
+  event.stopPropagation();
+
   const codeElement = button.closest(".code-block-container")?.querySelector("code");
   const codeText = codeElement?.textContent ?? "";
   if (!codeText) {
