@@ -1,4 +1,5 @@
 import MarkdownIt from "markdown-it";
+import hljs from "highlight.js/lib/common";
 
 const markdown = new MarkdownIt({
   breaks: true,
@@ -6,6 +7,49 @@ const markdown = new MarkdownIt({
   linkify: true,
   typographer: true,
 });
+
+const LANGUAGE_ALIASES: Record<string, string> = {
+  "c++": "cpp",
+  "c#": "csharp",
+  cxx: "cpp",
+  cc: "cpp",
+  cs: "csharp",
+  hpp: "cpp",
+  hxx: "cpp",
+  js: "javascript",
+  py: "python",
+  rb: "ruby",
+  ps1: "powershell",
+  ts: "typescript",
+  sh: "bash",
+  shell: "bash",
+  yml: "yaml",
+  md: "markdown",
+  plaintext: "text",
+};
+
+const LANGUAGE_LABELS: Record<string, string> = {
+  bash: "Bash",
+  cpp: "C++",
+  css: "CSS",
+  go: "Go",
+  html: "HTML",
+  java: "Java",
+  javascript: "JavaScript",
+  json: "JSON",
+  markdown: "Markdown",
+  powershell: "PowerShell",
+  python: "Python",
+  ruby: "Ruby",
+  rust: "Rust",
+  sql: "SQL",
+  text: "TEXT",
+  tsx: "TSX",
+  typescript: "TypeScript",
+  vue: "Vue",
+  xml: "XML",
+  yaml: "YAML",
+};
 
 const staticAssetModules = import.meta.glob<string>(
   ["../assets/**/*.{png,jpg,jpeg,webp,avif,svg,gif,ico}", "./**/*.{png,jpg,jpeg,webp,avif,svg,gif,ico}"],
@@ -15,28 +59,123 @@ const staticAssetModules = import.meta.glob<string>(
   },
 );
 
-function isExternalUrl(value: string) {
-  return /^(https?:)?\/\//.test(value) || value.startsWith("mailto:") || value.startsWith("data:");
-}
+function normalizeModulePath(value: string) {
+  const stack: string[] = [];
 
-function resolveRelativePath(basePath: string, targetPath: string) {
-  const segments = basePath.split("/");
-  segments.pop();
-
-  for (const segment of targetPath.split("/")) {
+  for (const segment of value.split("/")) {
     if (!segment || segment === ".") {
       continue;
     }
 
     if (segment === "..") {
-      segments.pop();
+      if (stack.length > 0) {
+        stack.pop();
+      }
       continue;
     }
 
-    segments.push(segment);
+    stack.push(segment);
   }
 
-  return segments.join("/");
+  return `/${stack.join("/")}`;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function normalizeLanguage(value: string) {
+  const baseLanguage = value.trim().toLowerCase();
+  return LANGUAGE_ALIASES[baseLanguage] ?? baseLanguage;
+}
+
+function formatLanguageLabel(language: string) {
+  if (!language) {
+    return "TEXT";
+  }
+
+  return (
+    LANGUAGE_LABELS[language] ??
+    language
+      .split(/[-_]/)
+      .filter(Boolean)
+      .map((segment) => segment[0]?.toUpperCase() + segment.slice(1))
+      .join(" ")
+  );
+}
+
+function toLanguageClassToken(language: string) {
+  return language.replace(/[^a-z0-9_-]+/g, "-");
+}
+
+function highlightLine(line: string, language: string) {
+  if (!line) {
+    return "";
+  }
+
+  if (language && hljs.getLanguage(language)) {
+    return hljs.highlight(line, {
+      language,
+      ignoreIllegals: true,
+    }).value;
+  }
+
+  return escapeHtml(line);
+}
+
+function renderCodeBlock(content: string, rawInfo: string) {
+  const languageToken = rawInfo.trim().split(/\s+/)[0] ?? "";
+  const language = normalizeLanguage(languageToken);
+  const languageLabel = formatLanguageLabel(language);
+  const normalizedContent = content.replace(/\r\n?/g, "\n").replace(/\n$/, "");
+  const lines = normalizedContent ? normalizedContent.split("\n") : [""];
+  const highlightedLines = lines
+    .map((line) => {
+      const lineHtml = highlightLine(line, language);
+      return `<span class="code-block-line"><span class="code-block-line__content">${lineHtml}</span></span>`;
+    })
+    .join("\n");
+  const languageClass = language ? ` language-${toLanguageClassToken(language)}` : "";
+
+  return `
+<div class="code-block-container">
+  <div class="code-block-header">
+    <div class="language-label">${escapeHtml(languageLabel)}</div>
+    <button class="copy-action" type="button" aria-label="复制代码">
+      <span class="copy-action__label">复制</span>
+      <svg class="copy-action__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M9 9.75A2.25 2.25 0 0 1 11.25 7.5h7.5A2.25 2.25 0 0 1 21 9.75v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5A2.25 2.25 0 0 1 9 17.25z"></path>
+        <path d="M15 7.5V6.75A2.25 2.25 0 0 0 12.75 4.5h-7.5A2.25 2.25 0 0 0 3 6.75v7.5a2.25 2.25 0 0 0 2.25 2.25H6"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="code-content">
+    <pre><code class="hljs${languageClass}">${highlightedLines}</code></pre>
+  </div>
+</div>`.trim();
+}
+
+const normalizedAssetModules = Object.fromEntries(
+  Object.entries(staticAssetModules).map(([filePath, source]) => [
+    normalizeModulePath(filePath),
+    source,
+  ]),
+);
+
+function isExternalUrl(value: string) {
+  return /^(https?:)?\/\//.test(value) || value.startsWith("mailto:") || value.startsWith("data:");
+}
+
+function resolveRelativePath(basePath: string, targetPath: string) {
+  const normalizedBase = normalizeModulePath(basePath);
+  const baseSegments = normalizedBase.split("/");
+  baseSegments.pop();
+  return normalizeModulePath(`${baseSegments.join("/")}/${targetPath}`);
 }
 
 function resolveAssetSource(source: string, basePath: string) {
@@ -45,7 +184,7 @@ function resolveAssetSource(source: string, basePath: string) {
   }
 
   const resolvedPath = resolveRelativePath(basePath, source);
-  return staticAssetModules[resolvedPath] ?? source;
+  return normalizedAssetModules[resolvedPath] ?? source;
 }
 
 const defaultLinkOpen =
@@ -81,6 +220,16 @@ markdown.renderer.rules.image = (tokens, idx, options, env, self) => {
   tokens[idx]?.attrSet("loading", "lazy");
   tokens[idx]?.attrSet("decoding", "async");
   return defaultImageRender(tokens, idx, options, env, self);
+};
+
+markdown.renderer.rules.fence = (tokens, idx) => {
+  const token = tokens[idx];
+  return renderCodeBlock(token?.content ?? "", token?.info ?? "");
+};
+
+markdown.renderer.rules.code_block = (tokens, idx) => {
+  const token = tokens[idx];
+  return renderCodeBlock(token?.content ?? "", "");
 };
 
 export interface MarkdownMeta {

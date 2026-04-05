@@ -1,8 +1,34 @@
 .markdown-body {
+  --md-code-bg: #f4f6f8;
+  --md-code-header-bg: #edf0f2;
+  --md-code-text: #1f2933;
+  --md-code-muted: #7f8892;
+  --md-code-keyword: #245d9c;
+  --md-code-title: #0d6f71;
+  --md-code-string: #227a52;
+  --md-code-number: #b36a10;
+  --md-code-builtin: #9b4a1f;
+  --md-code-meta: #5b6670;
   color: var(--text-soft);
   font-size: 1rem;
   line-height: 1.8;
-  word-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+:root[data-theme="dark"] .markdown-body {
+  --md-code-bg: #101214;
+  --md-code-header-bg: #14181c;
+  --md-code-text: #eef2f6;
+  --md-code-muted: #8d98a3;
+  --md-code-keyword: #8ab4ff;
+  --md-code-title: #7cd4d1;
+  --md-code-string: #8bd7a6;
+  --md-code-number: #f1b663;
+  --md-code-builtin: #f2a46b;
+  --md-code-meta: #a3adb6;
 }
 
 .markdown-body > :first-child {
@@ -41,6 +67,21 @@
 
 .markdown-body h3 {
   font-size: 1.45rem;
+}
+
+.markdown-body p,
+.markdown-body li,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body blockquote,
+.markdown-body td,
+.markdown-body th,
+.markdown-body table,
+.markdown-body pre {
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .markdown-body p,
@@ -106,23 +147,215 @@
 }
 
 .markdown-body pre {
-  overflow: auto;
-  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
   border-radius: 1rem;
-  background: var(--surface);
+  background: var(--md-code-bg);
 }
 
 .markdown-body pre code {
   padding: 0;
   background: transparent;
+  white-space: pre;
+}
+
+.markdown-body .code-block-container {
+  display: block;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
+  border-radius: 1rem;
+  background: transparent;
+  box-shadow: none;
+  font-family:
+    "Roboto",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.markdown-body .code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 1.82rem;
+  padding: 0.16rem 0.58rem;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--md-code-header-bg);
+}
+
+.markdown-body .language-label {
+  color: var(--md-code-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.markdown-body .copy-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.14rem 0.34rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-code-header-bg) 88%, var(--text) 6%);
+  color: var(--md-code-text);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition:
+    opacity 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.markdown-body .copy-action:hover {
+  opacity: 0.94;
+  background: color-mix(in srgb, var(--md-code-header-bg) 82%, var(--text) 10%);
+  border-color: color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.markdown-body .copy-action:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, transparent);
+  outline-offset: 2px;
+}
+
+.markdown-body .copy-action[data-copied="true"] {
+  background: color-mix(in srgb, var(--accent) 18%, var(--md-code-header-bg));
+}
+
+.markdown-body .copy-action__icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.markdown-body .code-content {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.42rem 0.41rem 0.52rem 0.28rem;
+  border-radius: 0 0 1rem 1rem;
+  background: var(--md-code-bg);
+}
+
+.markdown-body .code-content pre {
+  display: block;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  max-width: none;
+  width: max-content;
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+}
+
+.markdown-body .code-content code {
+  display: block;
+  min-width: max-content;
+  padding: 0 1rem 0 0;
+  background: transparent;
+  color: var(--md-code-text);
+  font-family:
+    "Fira Code",
+    "Hack",
+    "Monoid",
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+  font-size: 0.78rem;
+  line-height: 1.22;
+  counter-reset: line-number;
+}
+
+.markdown-body .code-block-line {
+  display: grid;
+  grid-template-columns: 1.08rem minmax(max-content, auto);
+  column-gap: 0.7rem;
+  align-items: flex-start;
+  min-height: 1.18em;
+  counter-increment: line-number;
+}
+
+.markdown-body .code-block-line::before {
+  content: counter(line-number);
+  color: var(--md-code-muted);
+  text-align: right;
+  user-select: none;
+}
+
+.markdown-body .code-block-line__content {
+  flex: 1 0 auto;
+  min-width: max-content;
+}
+
+.markdown-body .code-content .hljs-comment,
+.markdown-body .code-content .hljs-quote {
+  color: var(--md-code-muted);
+  font-style: italic;
+}
+
+.markdown-body .code-content .hljs-keyword,
+.markdown-body .code-content .hljs-selector-tag,
+.markdown-body .code-content .hljs-literal {
+  color: var(--md-code-keyword);
+  font-weight: 700;
+}
+
+.markdown-body .code-content .hljs-title,
+.markdown-body .code-content .hljs-title.class_,
+.markdown-body .code-content .hljs-title.function_ {
+  color: var(--md-code-title);
+}
+
+.markdown-body .code-content .hljs-string,
+.markdown-body .code-content .hljs-attr,
+.markdown-body .code-content .hljs-template-tag,
+.markdown-body .code-content .hljs-template-variable {
+  color: var(--md-code-string);
+}
+
+.markdown-body .code-content .hljs-number,
+.markdown-body .code-content .hljs-symbol,
+.markdown-body .code-content .hljs-bullet {
+  color: var(--md-code-number);
+}
+
+.markdown-body .code-content .hljs-built_in,
+.markdown-body .code-content .hljs-type,
+.markdown-body .code-content .hljs-section {
+  color: var(--md-code-builtin);
+}
+
+.markdown-body .code-content .hljs-meta,
+.markdown-body .code-content .hljs-operator,
+.markdown-body .code-content .hljs-punctuation {
+  color: var(--md-code-meta);
 }
 
 .markdown-body img {
   display: block;
-  max-width: 100%;
+  position: static !important;
+  float: none !important;
+  max-width: min(100%, 38rem);
   width: auto;
   height: auto;
-  margin: 1.25rem auto;
+  margin: 1.1rem auto;
   border-radius: 1rem;
   box-shadow: var(--shadow-soft);
 }
@@ -146,6 +379,48 @@
 }
 
 @media (max-width: 760px) {
+  .markdown-body .code-block-header {
+    min-height: 1.72rem;
+    padding: 0.12rem 0.46rem;
+  }
+
+  .markdown-body .language-label {
+    font-size: 0.66rem;
+  }
+
+  .markdown-body .copy-action {
+    gap: 0.28rem;
+    padding: 0.1rem 0.26rem;
+    font-size: 0.68rem;
+  }
+
+  .markdown-body .copy-action__label {
+    display: none;
+  }
+
+  .markdown-body .copy-action[data-copied="true"] .copy-action__label {
+    display: inline;
+  }
+
+  .markdown-body .code-content {
+    padding: 0.34rem 0.45rem 0.44rem 0.27rem;
+  }
+
+  .markdown-body .code-content code {
+    font-size: 0.68rem;
+    line-height: 1.16;
+    padding-right: 0.92rem;
+  }
+
+  .markdown-body .code-block-line {
+    grid-template-columns: 0.86rem minmax(max-content, auto);
+    column-gap: 0.56rem;
+  }
+
+  .markdown-body img {
+    max-width: 100%;
+  }
+
   .markdown-body h1 {
     font-size: 3rem;
   }
