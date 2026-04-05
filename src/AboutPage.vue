@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import MarkdownContent from "@/components/MarkdownContent.vue";
+import aboutSource from "@/content/about.md?raw";
+import { renderMarkdown } from "@/content/markdown";
 import AppShell from "@/layout/AppShell.vue";
-import { aboutParagraphs, footerInfo, navigationLinks, profile } from "@/data";
+import { footerInfo, navigationLinks, profile } from "@/data";
+
+const aboutHtml = renderMarkdown(aboutSource);
 </script>
 
 <template>
@@ -15,27 +20,7 @@ import { aboutParagraphs, footerInfo, navigationLinks, profile } from "@/data";
     <section class="about-page">
       <div class="about-page__inner">
         <p class="about-page__eyebrow">About</p>
-        <h1>{{ profile.title }}</h1>
-        <p
-          v-if="profile.subtitle"
-          class="about-page__role"
-        >
-          {{ profile.subtitle }}
-        </p>
-        <p
-          v-if="profile.description"
-          class="about-page__lead"
-        >
-          {{ profile.description }}
-        </p>
-        <div class="about-page__copy">
-          <p
-            v-for="paragraph in aboutParagraphs"
-            :key="paragraph"
-          >
-            {{ paragraph }}
-          </p>
-        </div>
+        <MarkdownContent :html="aboutHtml" />
       </div>
     </section>
   </AppShell>

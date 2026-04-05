@@ -5,5 +5,6 @@
 @import "./layout/mobile-drawer.css";
 @import "./layout/site-footer.css";
 @import "./components/theme-toggle.css";
+@import "./components/markdown-content.css";
 @import "./pages/home.css";
 @import "./pages/about.css";

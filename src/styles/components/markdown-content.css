@@ -1,0 +1,64 @@
+.markdown-content {
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.markdown-content > :first-child {
+  margin-top: 0;
+}
+
+.markdown-content > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin: 0 0 1rem;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+}
+
+.markdown-content h1 {
+  font-size: 4.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 2rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.3rem;
+}
+
+.markdown-content p,
+.markdown-content ul,
+.markdown-content ol,
+.markdown-content blockquote {
+  margin: 0 0 1rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.25rem;
+}
+
+.markdown-content a {
+  color: var(--accent);
+}
+
+.markdown-content blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid var(--line);
+}
+
+@media (max-width: 760px) {
+  .markdown-content h1 {
+    font-size: 3rem;
+  }
+
+  .markdown-content h2 {
+    font-size: 1.7rem;
+  }
+}

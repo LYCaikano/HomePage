@@ -24,6 +24,8 @@ This project is designed for a clean single-page landing experience with:
 - Split data modules for profile, links, media, and site settings
 - Layered CSS structure with tokens, base, layout, components, and pages
 - Configurable hero gallery with local assets or remote image URLs
+- Markdown-based About content
+- Markdown blog content foundation
 
 ## Tech Stack
 
@@ -79,6 +81,11 @@ src/
 │  ├─ profile.ts           Profile text content
 │  ├─ site.ts              Footer / site-level settings
 │  └─ types.ts             Shared types
+├─ content/
+│  ├─ about.md             About page content
+│  ├─ markdown.ts          Markdown parser helper
+│  ├─ posts.ts             Future blog post loader
+│  └─ posts/               Markdown blog posts
 ├─ layout/
 │  └─ AppShell.vue         Shared page shell
 ├─ sections/
@@ -112,7 +119,6 @@ Common fields:
 - `profile.title`
 - `profile.subtitle`
 - `profile.description`
-- `aboutParagraphs`
 
 ### Navigation and Buttons
 
@@ -156,6 +162,24 @@ Notes:
 
 - browser-deployed sites should not use raw local OS paths like `C:/...`
 - if you have local images, move them into `src/assets/gallery/` or `public/images/`
+
+### About Content
+
+Edit:
+
+- `src/content/about.md`
+
+The About page now renders Markdown directly, so you can write headings, paragraphs, lists, links, and blockquotes in plain Markdown.
+
+### Future Blog Content
+
+Prepared paths:
+
+- `src/content/posts/*.md`
+- `src/content/posts.ts`
+- `src/content/markdown.ts`
+
+The project now includes a reusable Markdown parser and a post loader for future blog pages.
 
 ### Footer
 

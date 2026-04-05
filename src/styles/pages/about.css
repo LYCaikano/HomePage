@@ -26,43 +26,8 @@
   text-transform: uppercase;
 }
 
-.about-page h1 {
-  margin: 0;
-  font-size: 4.5rem;
-  letter-spacing: -0.05em;
-  line-height: 0.96;
-}
-
-.about-page__role {
-  margin: 1rem 0 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.about-page__lead {
-  margin: 0.9rem 0 0;
-  color: var(--text-soft);
-  line-height: 1.75;
-}
-
-.about-page__copy {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1.4rem;
-  color: var(--text-soft);
-  line-height: 1.8;
-}
-
 @media (max-width: 760px) {
   .about-page {
     padding-top: calc(var(--top-bar-height) + 1.25rem);
-  }
-
-  .about-page h1 {
-    font-size: 3rem;
-  }
-
-  .about-page__role {
-    font-size: 1rem;
   }
 }
