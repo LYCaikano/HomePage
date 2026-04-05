@@ -178,6 +178,7 @@ Image and link notes:
 - Markdown images support:
   - remote URLs such as `https://example.com/demo.jpg`
   - files in `public/images/...` referenced as `/images/demo.jpg`
+  - relative paths from Markdown files, for example `../assets/gallery/example.png`
 
 ### Future Blog Content
 

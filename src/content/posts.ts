@@ -19,7 +19,7 @@ const postModules = import.meta.glob<string>("./posts/*.md", {
 export const blogPosts: BlogPostSummary[] = Object.entries(postModules)
   .map(([filePath, source]) => {
     const slug = filePath.split("/").pop()?.replace(/\.md$/, "") ?? "post";
-    const document = parseMarkdownDocument(source);
+    const document = parseMarkdownDocument(source, filePath);
     return {
       slug,
       body: document.body,

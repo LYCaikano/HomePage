@@ -5,7 +5,7 @@ import { renderMarkdown } from "@/content/markdown";
 import AppShell from "@/layout/AppShell.vue";
 import { footerInfo, navigationLinks, profile } from "@/data";
 
-const aboutHtml = renderMarkdown(aboutSource);
+const aboutHtml = renderMarkdown(aboutSource, "./about.md");
 </script>
 
 <template>
