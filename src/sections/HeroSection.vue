@@ -15,10 +15,24 @@ defineProps<{
     class="hero"
   >
     <div class="hero__copy" data-reveal>
-      <h1 class="hero__name">{{ profile.name }}</h1>
-      <p class="hero__role">{{ profile.role }}</p>
-      <p class="hero__tagline">{{ profile.tagline }}</p>
-      <p class="hero__intro">{{ profile.introduction }}</p>
+      <h1
+        v-if="profile.title"
+        class="hero__name"
+      >
+        {{ profile.title }}
+      </h1>
+      <p
+        v-if="profile.subtitle"
+        class="hero__role"
+      >
+        {{ profile.subtitle }}
+      </p>
+      <p
+        v-if="profile.description"
+        class="hero__intro"
+      >
+        {{ profile.description }}
+      </p>
 
       <div class="hero__actions">
         <a

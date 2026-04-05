@@ -15,8 +15,19 @@ import { aboutParagraphs, footerInfo, navigationLinks, profile } from "@/data";
     <section class="about-page">
       <div class="about-page__inner">
         <p class="about-page__eyebrow">About</p>
-        <h1>Hello, I'm {{ profile.name }}.</h1>
-        <p class="about-page__role">{{ profile.role }}</p>
+        <h1>{{ profile.title }}</h1>
+        <p
+          v-if="profile.subtitle"
+          class="about-page__role"
+        >
+          {{ profile.subtitle }}
+        </p>
+        <p
+          v-if="profile.description"
+          class="about-page__lead"
+        >
+          {{ profile.description }}
+        </p>
         <div class="about-page__copy">
           <p
             v-for="paragraph in aboutParagraphs"

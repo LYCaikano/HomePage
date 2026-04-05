@@ -39,6 +39,12 @@
   font-weight: 600;
 }
 
+.about-page__lead {
+  margin: 0.9rem 0 0;
+  color: var(--text-soft);
+  line-height: 1.75;
+}
+
 .about-page__copy {
   display: grid;
   gap: 1rem;

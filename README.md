@@ -109,9 +109,9 @@ Edit:
 Common fields:
 
 - `profile.name`
-- `profile.role`
-- `profile.tagline`
-- `profile.introduction`
+- `profile.title`
+- `profile.subtitle`
+- `profile.description`
 - `aboutParagraphs`
 
 ### Navigation and Buttons

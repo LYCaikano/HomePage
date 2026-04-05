@@ -4,9 +4,9 @@ export type ThemeMode = "light" | "dark";
 
 export interface ProfileInfo {
   name: string;
-  role: string;
-  tagline: string;
-  introduction: string;
+  title: string;
+  subtitle: string;
+  description: string;
 }
 
 export interface HeroPhoto {
