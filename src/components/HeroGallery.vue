@@ -99,7 +99,6 @@ onBeforeUnmount(() => {
         :aria-label="`Show image ${photoIndex + 1}`"
         @click="handleSelect(photoIndex)"
       >
-        <span class="gallery-card__glow" aria-hidden="true"></span>
         <img
           class="gallery-card__image"
           :src="photo.src"
@@ -119,24 +118,6 @@ onBeforeUnmount(() => {
   width: 100%;
   min-height: 29rem;
   overflow: visible;
-  isolation: isolate;
-}
-
-.gallery-shell::before {
-  content: "";
-  position: absolute;
-  width: 21rem;
-  height: 21rem;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.48), transparent 68%);
-  filter: blur(36px);
-  opacity: 0.82;
-  pointer-events: none;
-  z-index: 0;
-}
-
-:global(:root[data-theme="dark"]) .gallery-shell::before {
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 68%);
 }
 
 .gallery-stack {
@@ -144,7 +125,6 @@ onBeforeUnmount(() => {
   width: 20.5rem;
   height: 27.5rem;
   overflow: visible;
-  z-index: 1;
 }
 
 .gallery-card {
@@ -165,24 +145,7 @@ onBeforeUnmount(() => {
     filter 620ms ease;
 }
 
-.gallery-card__glow {
-  position: absolute;
-  inset: 14% 16% 10%;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.38);
-  filter: blur(30px);
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 0;
-}
-
-:global(:root[data-theme="dark"]) .gallery-card__glow {
-  background: rgba(255, 255, 255, 0.08);
-}
-
 .gallery-card__image {
-  position: relative;
-  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;

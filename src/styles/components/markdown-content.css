@@ -16,6 +16,7 @@
   max-width: 100%;
   word-break: break-word;
   overflow-wrap: break-word;
+  overflow-x: hidden;
 }
 
 :root[data-theme="dark"] .markdown-body {
@@ -162,9 +163,12 @@
 
 .markdown-body .code-block-container {
   display: block;
+  width: 100%;
   max-width: 100%;
   margin: 1.5rem 0;
   min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
   border-radius: 1rem;
   background: var(--md-code-header-bg);
@@ -288,12 +292,15 @@
 }
 
 .markdown-body .code-content {
+  width: 100%;
   max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: 0.72rem 0.41rem 0.52rem 0.28rem;
+  overscroll-behavior-x: contain;
+  padding: 0.48rem 0.41rem 0.32rem 0.28rem;
   border-top: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
   border-radius: 0 0 calc(1rem - 1px) calc(1rem - 1px);
   background: var(--md-code-bg);
@@ -308,21 +315,25 @@
 }
 
 .markdown-body .code-content pre {
-  display: block;
+  display: inline-block;
   margin: 0;
   padding: 0;
-  min-width: 0;
+  min-width: 100%;
   max-width: none;
   width: max-content;
+  box-sizing: border-box;
   overflow: visible;
   border-radius: 0;
   background: transparent;
+  vertical-align: top;
 }
 
 .markdown-body .code-content code {
   display: block;
-  min-width: max-content;
+  width: max-content;
+  min-width: 100%;
   padding: 0 1rem 0 0;
+  box-sizing: border-box;
   background: transparent;
   color: var(--md-code-text);
   font-family:
@@ -335,15 +346,18 @@
     Menlo,
     monospace;
   font-size: 0.78rem;
-  line-height: 0.95;
+  line-height: 0.82;
   counter-reset: line-number;
 }
 
 .markdown-body .code-block-line {
   display: grid;
   grid-template-columns: minmax(3.6ch, max-content) minmax(max-content, auto);
+  min-width: 100%;
+  width: max-content;
   column-gap: 0.875rem;
   align-items: flex-start;
+  line-height: 0.82;
   counter-increment: line-number;
 }
 
@@ -358,6 +372,7 @@
 .markdown-body .code-block-line__content {
   flex: 1 0 auto;
   min-width: max-content;
+  line-height: inherit;
 }
 
 .markdown-body .code-content .hljs-comment,
@@ -467,18 +482,19 @@
   }
 
   .markdown-body .code-content {
-    padding: 0.56rem 0.45rem 0.44rem 0.22rem;
+    padding: 0.4rem 0.4rem 0.28rem 0.2rem;
   }
 
   .markdown-body .code-content code {
     font-size: 0.68rem;
-    line-height: 0.95;
+    line-height: 0.8;
     padding-right: 0.92rem;
   }
 
   .markdown-body .code-block-line {
     grid-template-columns: minmax(3.2ch, max-content) minmax(max-content, auto);
     column-gap: 1.12rem;
+    line-height: 0.8;
   }
 
   .markdown-body img {

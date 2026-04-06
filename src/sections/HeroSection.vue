@@ -2,7 +2,7 @@
 import HeroGallery from "@/components/HeroGallery.vue";
 import type { HeroPhoto, LinkItem, ProfileInfo } from "@/data";
 
-defineProps<{
+const props = defineProps<{
   profile: ProfileInfo;
   actionLinks: LinkItem[];
   photos: HeroPhoto[];
@@ -30,6 +30,7 @@ defineProps<{
       <p
         v-if="profile.description"
         class="hero__intro"
+        :class="{ 'hero__intro--without-subtitle': !props.profile.subtitle }"
       >
         {{ profile.description }}
       </p>

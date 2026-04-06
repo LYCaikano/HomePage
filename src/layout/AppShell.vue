@@ -60,12 +60,10 @@ onBeforeUnmount(() => {
 watch(menuOpen, (isOpen) => {
   document.body.classList.toggle("menu-open", isOpen);
 });
-</script>
+  </script>
 
 <template>
   <div :class="['page-shell', pageClass]">
-    <div v-if="showAmbient" class="ambient ambient--one"></div>
-    <div v-if="showAmbient" class="ambient ambient--two"></div>
     <button
       class="mobile-nav-backdrop"
       type="button"

@@ -1,33 +1,8 @@
 .page-shell {
   position: relative;
-  overflow: hidden;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-}
-
-.ambient {
-  position: absolute;
-  border-radius: 999px;
-  filter: blur(24px);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.ambient--one {
-  top: 4rem;
-  right: -3rem;
-  width: 16rem;
-  height: 16rem;
-  background: rgba(103, 172, 255, 0.24);
-}
-
-.ambient--two {
-  top: 32rem;
-  left: -4rem;
-  width: 18rem;
-  height: 18rem;
-  background: rgba(255, 173, 98, 0.18);
 }
 
 .mobile-nav-backdrop {

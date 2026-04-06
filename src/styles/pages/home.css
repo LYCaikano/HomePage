@@ -101,6 +101,10 @@
   font-size: 0.98rem;
 }
 
+.hero__intro--without-subtitle {
+  margin-top: 0.95rem;
+}
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;

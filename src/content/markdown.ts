@@ -239,11 +239,121 @@ export interface MarkdownMeta {
   [key: string]: string | string[] | undefined;
 }
 
+export interface MarkdownHeading {
+  level: number;
+  slug: string;
+  text: string;
+}
+
 export interface MarkdownDocument<TMeta extends MarkdownMeta = MarkdownMeta> {
   body: string;
+  containsCjk: boolean;
+  headings: MarkdownHeading[];
   html: string;
   meta: TMeta;
+  readingMinutes: number;
+  wordCount: number;
 }
+
+function slugify(value: string) {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[`~!@#$%^&*()+=<>{}\[\]|\\:;"'?,./]+/g, "")
+    .replace(/\s+/g, "-");
+
+  return normalized || "section";
+}
+
+function stripMarkdownInlineSyntax(value: string) {
+  return value
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/_([^_]+)_/g, "$1")
+    .replace(/~~([^~]+)~~/g, "$1")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&[a-zA-Z0-9#]+;/g, " ")
+    .trim();
+}
+
+function collectHeadings(source: string) {
+  const headingSlugCounts = new Map<string, number>();
+
+  return source
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => /^#{2,6}\s+/.test(line))
+    .map((line) => {
+      const [, hashes, rawText] = line.match(/^(#{2,6})\s+(.+)$/) ?? [];
+      const plainText = stripMarkdownInlineSyntax(rawText ?? "");
+      const baseSlug = slugify(plainText);
+      const count = headingSlugCounts.get(baseSlug) ?? 0;
+      headingSlugCounts.set(baseSlug, count + 1);
+      return {
+        level: hashes.length,
+        text: plainText,
+        slug: count === 0 ? baseSlug : `${baseSlug}-${count + 1}`,
+      };
+    });
+}
+
+function normalizeMarkdownForReadingMetrics(source: string) {
+  return source
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/~~~[\s\S]*?~~~/g, " ")
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1 ")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ")
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/mailto:\S+/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-zA-Z0-9#]+;/g, " ")
+    .replace(/[#>*`~|[\]()]|^-+\s+/gm, " ")
+    .replace(/(?:^|\s)[*-]\s+/gm, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function analyzeReadingMetrics(source: string) {
+  const normalized = normalizeMarkdownForReadingMetrics(source);
+  const cjkCharacters = normalized.match(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]/gu) ?? [];
+  const latinTokens =
+    normalized
+      .replace(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]/gu, " ")
+      .match(/[A-Za-z0-9]+(?:[._'+-][A-Za-z0-9]+)*/g) ?? [];
+  const wordCount = cjkCharacters.length + latinTokens.length;
+  const estimatedMinutes =
+    latinTokens.length / 220 +
+    cjkCharacters.length / 300;
+
+  return {
+    containsCjk: cjkCharacters.length > 0,
+    readingMinutes: wordCount > 0 ? Math.max(1, Math.ceil(estimatedMinutes)) : 0,
+    wordCount,
+  };
+}
+
+const defaultHeadingOpen =
+  markdown.renderer.rules.heading_open ??
+  ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
+
+markdown.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
+  const inlineToken = tokens[idx + 1];
+  const headingText = inlineToken?.content ?? "";
+  const slugState =
+    typeof env?.headingSlugCounts === "object" && env.headingSlugCounts !== null
+      ? (env.headingSlugCounts as Record<string, number>)
+      : {};
+  const baseSlug = slugify(headingText);
+  const count = slugState[baseSlug] ?? 0;
+  slugState[baseSlug] = count + 1;
+  env.headingSlugCounts = slugState;
+  tokens[idx]?.attrSet("id", count === 0 ? baseSlug : `${baseSlug}-${count + 1}`);
+  return defaultHeadingOpen(tokens, idx, options, env, self);
+};
 
 function normalizeMetaValue(value: string) {
   if (value.includes(",")) {
@@ -263,19 +373,31 @@ export function parseMarkdownDocument<TMeta extends MarkdownMeta = MarkdownMeta>
   const trimmed = source.trimStart();
 
   if (!trimmed.startsWith("---\n")) {
+    const headings = collectHeadings(source);
+    const readingMetrics = analyzeReadingMetrics(source);
     return {
       body: source.trim(),
+      containsCjk: readingMetrics.containsCjk,
+      headings,
       html: markdown.render(source, { basePath }),
       meta: {} as TMeta,
+      readingMinutes: readingMetrics.readingMinutes,
+      wordCount: readingMetrics.wordCount,
     };
   }
 
   const endIndex = trimmed.indexOf("\n---\n", 4);
   if (endIndex === -1) {
+    const headings = collectHeadings(source);
+    const readingMetrics = analyzeReadingMetrics(source);
     return {
       body: source.trim(),
+      containsCjk: readingMetrics.containsCjk,
+      headings,
       html: markdown.render(source, { basePath }),
       meta: {} as TMeta,
+      readingMinutes: readingMetrics.readingMinutes,
+      wordCount: readingMetrics.wordCount,
     };
   }
 
@@ -298,11 +420,17 @@ export function parseMarkdownDocument<TMeta extends MarkdownMeta = MarkdownMeta>
       accumulator[key] = normalizeMetaValue(value);
       return accumulator;
     }, {});
+  const headings = collectHeadings(body);
+  const readingMetrics = analyzeReadingMetrics(body);
 
   return {
     body,
+    containsCjk: readingMetrics.containsCjk,
+    headings,
     html: markdown.render(body, { basePath }),
     meta: meta as TMeta,
+    readingMinutes: readingMetrics.readingMinutes,
+    wordCount: readingMetrics.wordCount,
   };
 }
 
