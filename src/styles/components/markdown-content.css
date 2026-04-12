@@ -56,18 +56,18 @@
 .markdown-body h1 {
   margin-bottom: 1.25rem;
   padding-bottom: 0.4rem;
-  font-size: 4.5rem;
+  font-size: 2.75rem;
   border-bottom: 1px solid var(--line);
 }
 
 .markdown-body h2 {
   padding-bottom: 0.3rem;
-  font-size: 2rem;
+  font-size: 1.82rem;
   border-bottom: 1px solid var(--line);
 }
 
 .markdown-body h3 {
-  font-size: 1.45rem;
+  font-size: 1.34rem;
 }
 
 .markdown-body p,
@@ -300,10 +300,47 @@
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
-  padding: 0.48rem 0.41rem 0.32rem 0.28rem;
+  padding: 0.48rem 0.41rem 0.58rem 0.28rem;
   border-top: 1px solid color-mix(in srgb, var(--md-code-header-bg) 80%, var(--line));
   border-radius: 0 0 calc(1rem - 1px) calc(1rem - 1px);
   background: var(--md-code-bg);
+  line-height: 0;
+}
+
+.markdown-body .code-content .code-scroll {
+  --md-code-gutter-width: 3.6ch;
+  --md-code-gutter-gap: 0.875rem;
+  display: grid;
+  grid-template-columns: minmax(var(--md-code-gutter-width), max-content) minmax(max-content, auto);
+  column-gap: var(--md-code-gutter-gap);
+  align-items: start;
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  font-family:
+    "Fira Code",
+    "Hack",
+    "Monoid",
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.markdown-body .code-content .code-gutter {
+  color: var(--md-code-muted);
+  text-align: right;
+  white-space: pre;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .markdown-body .code-block-container:not([open]) {
@@ -315,63 +352,29 @@
 }
 
 .markdown-body .code-content pre {
-  display: inline-block;
+  display: block;
   margin: 0;
   padding: 0;
-  min-width: 100%;
+  min-width: 0;
   max-width: none;
-  width: max-content;
+  width: auto;
   box-sizing: border-box;
   overflow: visible;
   border-radius: 0;
   background: transparent;
-  vertical-align: top;
+  line-height: inherit;
 }
 
 .markdown-body .code-content code {
   display: block;
-  width: max-content;
   min-width: 100%;
+  width: max-content;
   padding: 0 1rem 0 0;
   box-sizing: border-box;
   background: transparent;
   color: var(--md-code-text);
-  font-family:
-    "Fira Code",
-    "Hack",
-    "Monoid",
-    "SFMono-Regular",
-    Consolas,
-    "Liberation Mono",
-    Menlo,
-    monospace;
-  font-size: 0.78rem;
-  line-height: 0.82;
-  counter-reset: line-number;
-}
-
-.markdown-body .code-block-line {
-  display: grid;
-  grid-template-columns: minmax(3.6ch, max-content) minmax(max-content, auto);
-  min-width: 100%;
-  width: max-content;
-  column-gap: 0.875rem;
-  align-items: flex-start;
-  line-height: 0.82;
-  counter-increment: line-number;
-}
-
-.markdown-body .code-block-line::before {
-  content: counter(line-number);
-  color: var(--md-code-muted);
-  text-align: right;
-  justify-self: end;
-  user-select: none;
-}
-
-.markdown-body .code-block-line__content {
-  flex: 1 0 auto;
-  min-width: max-content;
+  font-family: inherit;
+  font-size: inherit;
   line-height: inherit;
 }
 
@@ -482,19 +485,14 @@
   }
 
   .markdown-body .code-content {
-    padding: 0.4rem 0.4rem 0.28rem 0.2rem;
+    padding: 0.4rem 0.4rem 0.48rem 0.2rem;
   }
 
-  .markdown-body .code-content code {
+  .markdown-body .code-content .code-scroll {
+    --md-code-gutter-width: 3.2ch;
+    --md-code-gutter-gap: 1.12rem;
     font-size: 0.68rem;
-    line-height: 0.8;
-    padding-right: 0.92rem;
-  }
-
-  .markdown-body .code-block-line {
-    grid-template-columns: minmax(3.2ch, max-content) minmax(max-content, auto);
-    column-gap: 1.12rem;
-    line-height: 0.8;
+    line-height: 1.2;
   }
 
   .markdown-body img {
@@ -502,14 +500,14 @@
   }
 
   .markdown-body h1 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .markdown-body h2 {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
   }
 
   .markdown-body h3 {
-    font-size: 1.25rem;
+    font-size: 1.16rem;
   }
 }

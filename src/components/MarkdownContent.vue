@@ -71,8 +71,11 @@ async function handleClick(event: Event) {
   event.preventDefault();
   event.stopPropagation();
 
-  const codeElement = button.closest(".code-block-container")?.querySelector("code");
-  const codeText = codeElement?.textContent ?? "";
+  const codeElement = button.closest(".code-block-container")?.querySelector<HTMLElement>("code");
+  const encodedRawCode = codeElement?.dataset.rawCode;
+  const codeText = encodedRawCode
+    ? decodeURIComponent(encodedRawCode)
+    : codeElement?.textContent ?? "";
   if (!codeText) {
     return;
   }

@@ -3,10 +3,14 @@
 }
 
 .about-layout .page-content {
-  --about-shell-width: min(calc(100vw - 2rem), 70rem);
-  --about-toc-width: clamp(11rem, 18vw, 14rem);
-  --about-toc-gap: clamp(1rem, 2vw, 1.75rem);
+  --about-shell-width: min(calc(100vw - 1.75rem), 77rem);
+  --about-toc-width: clamp(10rem, 16vw, 12rem);
+  --about-toc-gap: clamp(1rem, 1.5vw, 1.35rem);
   --about-toc-offset: clamp(-2.45rem, -3.15vw, -1.55rem);
+  --about-toc-left: clamp(3.6rem, calc((((100vw - var(--about-shell-width)) / 2 + var(--about-toc-offset)) / 4) * 3.96), 8.55rem);
+  --about-shell-left: calc((100vw - var(--about-shell-width)) / 2);
+  --about-body-inline-offset: max(0px, calc(var(--about-toc-left) - var(--about-shell-left)));
+  --about-body-max-width: calc(var(--about-shell-width) - var(--about-body-inline-offset) - var(--about-toc-width) - var(--about-toc-gap) - 0.5rem);
   width: var(--about-shell-width);
   align-items: start;
 }
@@ -24,10 +28,10 @@
 
 .about-page__inner {
   grid-area: body;
-  width: min(100%, 840px);
+  width: min(100%, 60rem, var(--about-body-max-width));
   min-width: 0;
   max-width: 100%;
-  justify-self: end;
+  justify-self: center;
 }
 
 .about-page__eyebrow {
@@ -92,7 +96,7 @@
   grid-area: toc;
   position: fixed;
   top: calc(var(--top-bar-height) + 1.4rem);
-  left: calc((100vw - var(--about-shell-width)) / 2 + var(--about-toc-offset));
+  left: var(--about-toc-left);
   width: var(--about-toc-width);
   max-height: calc(100dvh - var(--top-bar-height) - 2.8rem);
   overflow: hidden;
@@ -198,14 +202,15 @@
 
 @media (min-width: 1024px) and (max-width: 1180px) {
   .about-layout .page-content {
-    --about-shell-width: min(calc(100vw - 2.8rem), 64rem);
-    --about-toc-width: clamp(9.1rem, 14.2vw, 10.6rem);
-    --about-toc-gap: clamp(1.15rem, 1.8vw, 1.45rem);
+    --about-shell-width: min(calc(100vw - 2.4rem), 68rem);
+    --about-toc-width: clamp(8.6rem, 12.5vw, 9.9rem);
+    --about-toc-gap: clamp(0.95rem, 1.25vw, 1.15rem);
     --about-toc-offset: clamp(-1.8rem, -2.2vw, -1.1rem);
+    --about-toc-left: clamp(0.85rem, calc(0.85rem + (100vw - 64rem) * 0.12), 2rem);
   }
 
   .about-page__inner {
-    width: min(100%, 46.5rem);
+    width: min(100%, 53rem, var(--about-body-max-width));
   }
 
   .about-toc {
@@ -241,7 +246,7 @@
   }
 
   .about-page__inner {
-    width: min(100%, 48rem);
+    width: min(100%, 53rem);
     justify-self: stretch;
   }
 

@@ -113,19 +113,15 @@ function toLanguageClassToken(language: string) {
   return language.replace(/[^a-z0-9_-]+/g, "-");
 }
 
-function highlightLine(line: string, language: string) {
-  if (!line) {
-    return "";
-  }
-
+function highlightCode(content: string, language: string) {
   if (language && hljs.getLanguage(language)) {
-    return hljs.highlight(line, {
+    return hljs.highlight(content, {
       language,
       ignoreIllegals: true,
     }).value;
   }
 
-  return escapeHtml(line);
+  return escapeHtml(content);
 }
 
 function renderCodeBlock(content: string, rawInfo: string) {
@@ -134,16 +130,14 @@ function renderCodeBlock(content: string, rawInfo: string) {
   const languageLabel = formatLanguageLabel(language);
   const normalizedContent = content.replace(/\r\n?/g, "\n").replace(/\n$/, "");
   const lines = normalizedContent ? normalizedContent.split("\n") : [""];
-  const highlightedLines = lines
-    .map((line) => {
-      const lineHtml = highlightLine(line, language);
-      return `<span class="code-block-line"><span class="code-block-line__content">${lineHtml}</span></span>`;
-    })
-    .join("\n");
+  const isInitiallyExpanded = lines.length <= 30;
+  const highlightedContent = highlightCode(normalizedContent, language);
+  const lineNumbers = lines.map((_, index) => String(index + 1)).join("\n");
   const languageClass = language ? ` language-${toLanguageClassToken(language)}` : "";
+  const encodedContent = encodeURIComponent(normalizedContent);
 
   return `
-<details class="code-block-container">
+<details class="code-block-container"${isInitiallyExpanded ? " open" : ""}>
   <summary class="code-block-header">
     <div class="language-label">${escapeHtml(languageLabel)}</div>
     <span class="toggle-label" aria-hidden="true"></span>
@@ -158,7 +152,10 @@ function renderCodeBlock(content: string, rawInfo: string) {
     </div>
   </summary>
   <div class="code-content">
-    <pre><code class="hljs${languageClass}">${highlightedLines}</code></pre>
+    <div class="code-scroll">
+      <div class="code-gutter" aria-hidden="true">${escapeHtml(lineNumbers)}</div>
+      <pre><code class="hljs${languageClass}" data-raw-code="${encodedContent}">${highlightedContent}</code></pre>
+    </div>
   </div>
 </details>`.trim();
 }
